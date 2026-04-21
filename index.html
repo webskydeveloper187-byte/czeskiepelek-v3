@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="theme-color" content="#7c3aed">
+  <title>Tvoje láska - Seznamka pro dospělé</title>
+  <meta name="description" content="Poznej zralé ženy ve tvém okolí. Diskrétní seznamka pro dospělé. 100% bezpečně a anonymně.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #111827; line-height: 1.5; overflow-x: hidden; }
+    img { max-width: 100%; height: auto; display: block; }
+    button, a { cursor: pointer; text-decoration: none; border: none; background: none; font-family: inherit; }
+    
+    :root {
+      --violet-50: #f5f3ff; --violet-100: #ede9fe; --violet-200: #ddd6fe; --violet-400: #a78bfa;
+      --violet-500: #8b5cf6; --violet-600: #7c3aed; --violet-700: #6d28d9;
+      --pink-100: #fce7f3; --pink-200: #fbcfe8; --pink-400: #f472b6; --pink-500: #ec4899;
+      --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-300: #d1d5db;
+      --gray-400: #9ca3af; --gray-500: #6b7280; --gray-600: #4b5563; --gray-700: #374151;
+      --gray-800: #1f2937; --gray-900: #111827;
+      --green-500: #22c55e; --red-400: #f87171;
+    }
+    
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-content { background: #fff; border-radius: 1rem; padding: 1.5rem 2rem; max-width: 22rem; width: 100%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-title { font-size: 1.375rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1.5rem; }
+    .modal-buttons { display: flex; gap: 0.75rem; }
+    .modal-btn { flex: 1; padding: 0.875rem 1.5rem; border-radius: 0.75rem; font-size: 1rem; font-weight: 600; transition: all 0.2s; display: inline-block; text-align: center; }
+    .modal-btn-yes { background: var(--violet-600); color: #fff; }
+    .modal-btn-yes:hover { background: var(--violet-700); }
+    .modal-btn-no { background: var(--gray-100); color: var(--gray-800); }
+    .modal-btn-no:hover { background: var(--gray-200); }
+    .modal-subtext { font-size: 0.75rem; color: var(--gray-400); margin-top: 1.25rem; }
+    
+    /* Header */
+    .header { position: sticky; top: 0; background: rgba(255,255,255,0.98); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 50; padding: 0.75rem 1rem; border-bottom: 1px solid var(--gray-100); }
+    .header-inner { max-width: 72rem; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.125rem; color: var(--gray-900); }
+    .logo svg { width: 1.25rem; height: 1.25rem; color: var(--violet-500); }
+    .header-right { display: flex; align-items: center; gap: 0.75rem; }
+    .secure-badge { display: none; align-items: center; gap: 0.375rem; font-size: 0.875rem; color: var(--gray-500); }
+    .secure-badge svg { width: 1rem; height: 1rem; color: var(--violet-400); }
+    .login-btn { padding: 0.5rem 1rem; border: 1px solid var(--gray-200); border-radius: 0.5rem; color: var(--gray-700); font-size: 0.875rem; font-weight: 500; transition: all 0.2s; }
+    .login-btn:hover { border-color: var(--violet-400); color: var(--violet-600); }
+    @media (min-width: 768px) { .secure-badge { display: flex; } }
+    
+    /* Hero */
+    .hero { position: relative; padding: 4rem 1rem; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .hero-circle-outer { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 500px; height: 500px; border-radius: 50%; background: rgba(252,231,243,0.7); }
+    .hero-circle-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; border-radius: 50%; background: rgba(237,233,254,0.6); }
+    .hero-content { position: relative; max-width: 48rem; margin: 0 auto; text-align: center; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: #fff; border: 1px solid var(--pink-200); padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; color: var(--pink-500); font-weight: 500; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .hero-badge svg { width: 1rem; height: 1rem; }
+    .hero-title { font-size: 1.875rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; color: var(--gray-900); letter-spacing: -0.02em; }
+    .hero-title span { color: var(--violet-600); }
+    .hero-subtitle { color: var(--gray-500); font-size: 1rem; margin-bottom: 2rem; max-width: 28rem; margin-left: auto; margin-right: auto; line-height: 1.6; }
+    .stats-pill { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.75rem; background: #fff; padding: 0.75rem 1.25rem; border-radius: 9999px; margin-bottom: 2rem; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.15); border: 1px solid var(--gray-100); }
+    .stat-item { display: flex; align-items: center; gap: 0.5rem; }
+    .stat-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; }
+    .stat-dot-green { background: var(--green-500); animation: pulse 2s infinite; }
+    .stat-dot-pink { background: var(--pink-400); }
+    .stat-number { font-weight: 700; color: var(--violet-600); font-variant-numeric: tabular-nums; transition: all 0.3s; }
+    .stat-label { color: var(--gray-600); font-size: 0.875rem; }
+    .stat-divider { width: 1px; height: 1.25rem; background: var(--gray-200); display: none; }
+    .cta-btn { width: 100%; max-width: 26rem; background: var(--violet-600); color: #fff; padding: 1rem 2rem; border-radius: 9999px; font-size: 1.125rem; font-weight: 600; box-shadow: 0 20px 40px -10px rgba(124,58,237,0.4); transition: all 0.2s; }
+    .cta-btn:hover { background: var(--violet-700); box-shadow: 0 20px 40px -10px rgba(124,58,237,0.5); transform: translateY(-2px); }
+    .cta-btn:active { transform: translateY(0); }
+    .hero-note { color: var(--gray-400); font-size: 0.875rem; margin-top: 1.25rem; }
+    .hero-trust { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; font-size: 0.875rem; color: var(--gray-500); }
+    .hero-trust-item { display: flex; align-items: center; gap: 0.375rem; }
+    .hero-trust-item svg { width: 1rem; height: 1rem; color: var(--violet-500); }
+    .scroll-indicator { display: flex; justify-content: center; padding-top: 3rem; animation: bounce 2s infinite; }
+    .scroll-indicator svg { width: 1.25rem; height: 1.25rem; color: var(--gray-300); }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    @media (min-width: 768px) {
+      .hero { padding: 6rem 1rem; }
+      .hero-circle-outer { width: 700px; height: 700px; }
+      .hero-circle-inner { width: 420px; height: 420px; }
+      .hero-title { font-size: 3rem; }
+      .hero-subtitle { font-size: 1.125rem; }
+      .stat-divider { display: block; }
+    }
+    @media (min-width: 1024px) { .hero-title { font-size: 3.5rem; } }
+    
+    /* Profiles Carousel */
+    .profiles { padding: 3rem 0 4rem; overflow: hidden; }
+    .profiles-title { font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: 2.5rem; color: var(--gray-900); padding: 0 1rem; }
+    .carousel-wrapper { position: relative; }
+    .carousel-fade-left { position: absolute; left: 0; top: 0; bottom: 0; width: 3rem; background: linear-gradient(to right, #fff, transparent); z-index: 10; pointer-events: none; }
+    .carousel-fade-right { position: absolute; right: 0; top: 0; bottom: 0; width: 3rem; background: linear-gradient(to left, #fff, transparent); z-index: 10; pointer-events: none; }
+    .carousel-track { display: flex; gap: 1rem; padding: 0 1rem; will-change: transform; }
+    .profile-card { flex-shrink: 0; width: calc((100vw - 4rem) / 2); max-width: 280px; cursor: pointer; }
+    .profile-card-inner { position: relative; aspect-ratio: 3/4; border-radius: 1rem; overflow: hidden; background: var(--gray-100); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.2); }
+    .profile-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .profile-card:hover img { transform: scale(1.05); }
+    .profile-card.blur img { filter: blur(12px); transform: scale(1.05); }
+    .profile-gradient { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.1) 50%, transparent); }
+    .profile-badge { position: absolute; top: 0.75rem; right: 0.75rem; background: var(--green-500); color: #fff; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; display: flex; align-items: center; gap: 0.375rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .profile-badge-dot { width: 0.375rem; height: 0.375rem; background: #fff; border-radius: 50%; animation: pulse 2s infinite; }
+    .profile-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; }
+    .profile-name { color: #fff; font-weight: 600; font-size: 1.125rem; }
+    .profile-location { color: rgba(255,255,255,0.8); font-size: 0.875rem; display: flex; align-items: center; gap: 0.375rem; margin-top: 0.125rem; }
+    .profile-location svg { width: 0.75rem; height: 0.75rem; fill: var(--red-400); }
+    .content-locker { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; padding: 1rem; background: rgba(0,0,0,0.2); }
+    .locker-icon { width: 3.5rem; height: 3.5rem; border: 2px solid var(--violet-400); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; background: rgba(0,0,0,0.3); }
+    .locker-icon svg { width: 1.5rem; height: 1.5rem; stroke: #fff; }
+    .locker-text { font-size: 0.875rem; font-weight: 500; line-height: 1.4; }
+    .locker-link { color: var(--violet-400); font-size: 0.75rem; margin-top: 0.5rem; text-decoration: underline; }
+    @media (min-width: 640px) { .profile-card { width: calc((100vw - 5rem) / 3); } }
+    @media (min-width: 768px) {
+      .profiles { padding: 5rem 0; }
+      .profiles-title { font-size: 2.25rem; }
+      .carousel-fade-left, .carousel-fade-right { width: 6rem; }
+      .profile-card { width: 280px; }
+    }
+    
+    /* Features */
+    .features { padding: 3rem 1rem; }
+    .features-title { font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: 0.75rem; color: var(--gray-900); }
+    .features-subtitle { color: var(--gray-500); text-align: center; max-width: 32rem; margin: 0 auto 2.5rem; }
+    .features-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; max-width: 72rem; margin: 0 auto; }
+    .feature-card { background: #fff; padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--gray-100); transition: all 0.2s; cursor: pointer; }
+    .feature-card:hover { border-color: var(--violet-200); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+    .feature-icon { width: 3rem; height: 3rem; background: var(--violet-50); border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+    .feature-icon svg { width: 1.5rem; height: 1.5rem; stroke: var(--violet-500); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .feature-title { font-weight: 700; font-size: 1.0625rem; margin-bottom: 0.5rem; color: var(--gray-900); }
+    .feature-desc { color: var(--gray-500); font-size: 0.875rem; line-height: 1.6; }
+    @media (min-width: 640px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .features-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (min-width: 768px) { .features { padding: 5rem 1rem; } .features-title { font-size: 2.25rem; } }
+    
+    /* Security */
+    .security { padding: 3rem 1rem; background: var(--gray-50); text-align: center; }
+    .security-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: #fff; border: 1px solid var(--violet-100); padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; color: var(--violet-600); font-weight: 500; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .security-badge svg { width: 1rem; height: 1rem; fill: var(--violet-600); }
+    .security-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.75rem; color: var(--gray-900); }
+    .security-subtitle { color: var(--gray-500); max-width: 40rem; margin: 0 auto 2.5rem; }
+    .security-cards { display: grid; grid-template-columns: 1fr; gap: 1rem; max-width: 72rem; margin: 0 auto 2.5rem; }
+    .security-card { background: #fff; padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--gray-100); text-align: left; transition: all 0.2s; cursor: pointer; }
+    .security-card:hover { border-color: var(--violet-200); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1); }
+    .security-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+    .security-tag { display: flex; align-items: center; gap: 0.5rem; background: #fff; border: 1px solid var(--gray-100); padding: 0.625rem 1rem; border-radius: 9999px; font-size: 0.875rem; color: var(--gray-600); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .security-tag svg { width: 1rem; height: 1rem; stroke: var(--violet-500); fill: none; }
+    @media (min-width: 640px) { .security-cards { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .security-cards { grid-template-columns: repeat(4, 1fr); } }
+    @media (min-width: 768px) { .security { padding: 5rem 1rem; } .security-title { font-size: 2.25rem; } }
+    
+    /* Stats */
+    .stats { padding: 4rem 1rem; }
+    .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; max-width: 64rem; margin: 0 auto; text-align: center; }
+    .stat-value { font-size: 2.25rem; font-weight: 800; color: var(--violet-600); font-variant-numeric: tabular-nums; }
+    .stat-value-label { color: var(--gray-500); margin-top: 0.5rem; font-size: 0.875rem; }
+    @media (min-width: 768px) { .stats { padding: 5rem 1rem; } .stats-grid { grid-template-columns: repeat(4, 1fr); } .stat-value { font-size: 3rem; } .stat-value-label { font-size: 1rem; } }
+    
+    /* CTA */
+    .cta { padding: 4rem 1rem; background: linear-gradient(to bottom, var(--violet-50), #fff); text-align: center; }
+    .cta-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: #fff; border: 1px solid var(--violet-100); padding: 0.5rem 1rem; border-radius: 9999px; font-size: 0.875rem; color: var(--violet-600); font-weight: 500; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .cta-badge svg { width: 1rem; height: 1rem; stroke: currentColor; fill: none; }
+    .cta-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; color: var(--gray-900); line-height: 1.3; }
+    .cta-subtitle { color: var(--gray-500); margin-bottom: 2rem; }
+    .cta-button { display: inline-block; background: var(--violet-600); color: #fff; padding: 1rem 2.5rem; border-radius: 9999px; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 0 20px 40px -10px rgba(124,58,237,0.4); transition: all 0.2s; }
+    .cta-button:hover { background: var(--violet-700); box-shadow: 0 20px 40px -10px rgba(124,58,237,0.5); transform: translateY(-2px); }
+    @media (min-width: 768px) { .cta { padding: 6rem 1rem; } .cta-title { font-size: 2.25rem; } }
+    
+    /* Footer */
+    .footer { padding: 1.5rem 1rem; border-top: 1px solid var(--gray-100); }
+    .footer-inner { max-width: 72rem; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+    .footer-link { color: var(--gray-500); font-size: 0.875rem; transition: color 0.2s; }
+    .footer-link:hover { color: var(--violet-600); }
+    .footer-copy { color: var(--gray-400); font-size: 0.75rem; }
+    @media (min-width: 768px) { .footer-inner { flex-direction: row; justify-content: space-between; } .footer-links { gap: 1.5rem; } }
+  </style>
+</head>
+<body>
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Má víc než 45 let?</h3>
+      <div class="modal-buttons">
+        <a href="https://radarkobiet.pl/link/2893/57997853" class="modal-btn modal-btn-yes">Ano</a>
+        <a href="https://radarkobiet.pl/link/2892/57997853" class="modal-btn modal-btn-no">Ne</a>
+      </div>
+      <p class="modal-subtext">Dobereme ti ty nejlépe odpovídající profily</p>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        Tvoje láska
+      </div>
+      <div class="header-right">
+        <div class="secure-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Šifrované spojení
+        </div>
+        <button class="login-btn" onclick="openModal()">Přihlásit se</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-circle-outer"></div>
+      <div class="hero-circle-inner"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        Objev kouzlo nočních setkání
+      </div>
+      <h1 class="hero-title">Zralé ženy z <span>Tvého okolí</span> hledají upřímnou konverzaci</h1>
+      <p class="hero-subtitle">Poznej někoho hodnotného – bezpečně, diskrétně a v kulturní atmosféře.</p>
+      
+      <div class="stats-pill">
+        <div class="stat-item">
+          <span class="stat-dot stat-dot-green"></span>
+          <span class="stat-number" id="women-count">260</span>
+          <span class="stat-label">žen online</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-dot stat-dot-pink"></span>
+          <span class="stat-number" id="men-count">171</span>
+          <span class="stat-label">mužů online</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span class="stat-label">ve Tvém okolí</span>
+        </div>
+      </div>
+      
+      <button class="cta-btn" onclick="openModal()">Začni seznámení za 10 sekund</button>
+      <p class="hero-note">Bezplatná registrace. Bez závazků. Úplná anonymita.</p>
+      
+      <div class="hero-trust">
+        <div class="hero-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          100% Bezpečně
+        </div>
+        <div class="hero-trust-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Úplná diskrétnost
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- Profiles -->
+  <section class="profiles">
+    <h2 class="profiles-title">Aktivní profily ve Tvém okolí</h2>
+    <div class="carousel-wrapper">
+      <div class="carousel-fade-left"></div>
+      <div class="carousel-fade-right"></div>
+      <div class="carousel-track" id="carousel"></div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <h2 class="features-title">Proč my?</h2>
+    <p class="features-subtitle">Diskrétnost a bezpečnost jsou základy naší platformy</p>
+    <div class="features-grid">
+      <div class="feature-card" onclick="openModal()">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="feature-title">Tisíce profilů</h3>
+        <p class="feature-desc">Ověřená databáze aktivních uživatelů hledajících diskrétní setkání</p>
+      </div>
+      <div class="feature-card" onclick="openModal()">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feature-title">100% Bezpečnost</h3>
+        <p class="feature-desc">SSL šifrování a ověření totožnosti každého uživatele</p>
+      </div>
+      <div class="feature-card" onclick="openModal()">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h3 class="feature-title">Úplná anonymita</h3>
+        <p class="feature-desc">Tvoje data jsou chráněna – nikdo se nedozví o Tvé aktivitě</p>
+      </div>
+      <div class="feature-card" onclick="openModal()">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <h3 class="feature-title">Bez závazků</h3>
+        <p class="feature-desc">Poznávej lidi podle svých pravidel, bez tlaku a očekávání</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security -->
+  <section class="security">
+    <div class="security-badge">
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      Tvoje bezpečnost je naše priorita
+    </div>
+    <h2 class="security-title">Diskrétně a bezpečně</h2>
+    <p class="security-subtitle">Rozumíme potřebě anonymity. Proto jsme vytvořili platformu, kde můžeš svobodně poznávat nové lidi bez závazků.</p>
+    
+    <div class="security-cards">
+      <div class="security-card" onclick="openModal()">
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3 class="feature-title">100% Bezpečnost</h3>
+        <p class="feature-desc">Pokročilé SSL šifrování chrání všechna Tvá data</p>
+      </div>
+      <div class="security-card" onclick="openModal()">
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <h3 class="feature-title">Ověření totožnosti</h3>
+        <p class="feature-desc">Každý profil prochází procesem ověření</p>
+      </div>
+      <div class="security-card" onclick="openModal()">
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <h3 class="feature-title">Úplná diskrétnost</h3>
+        <p class="feature-desc">Tvoje aktivita zůstává zcela anonymní</p>
+      </div>
+      <div class="security-card" onclick="openModal()">
+        <div class="feature-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <h3 class="feature-title">Soukromé konverzace</h3>
+        <p class="feature-desc">Šifrované zprávy – pouze Ty a Tvůj protějšek</p>
+      </div>
+    </div>
+    
+    <div class="security-tags">
+      <div class="security-tag">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        SSL šifrování
+      </div>
+      <div class="security-tag">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Ověřené profily
+      </div>
+      <div class="security-tag">
+        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        V souladu s GDPR
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats" id="stats-section">
+    <div class="stats-grid">
+      <div><div class="stat-value" id="stat1">0</div><div class="stat-value-label">Aktivních uživatelů</div></div>
+      <div><div class="stat-value" id="stat2">0</div><div class="stat-value-label">Odeslaných zpráv</div></div>
+      <div><div class="stat-value" id="stat3">0</div><div class="stat-value-label">Úspěšných setkání</div></div>
+      <div><div class="stat-value">24/7</div><div class="stat-value-label">Online podpora</div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-badge">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      Připoj se k nám
+    </div>
+    <h2 class="cta-title">Registrace je zdarma<br>a trvá jen 10 sekund!</h2>
+    <p class="cta-subtitle">Nečekej! Tisíce lidí hledá někoho jako Ty.</p>
+    <a href="#" class="cta-button" onclick="event.preventDefault(); openModal();">BEZPLATNÁ REGISTRACE</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        Tvoje láska
+      </div>
+      <div class="footer-links">
+        <a href="#" class="footer-link" onclick="event.preventDefault(); openModal();">Podmínky</a>
+        <a href="#" class="footer-link" onclick="event.preventDefault(); openModal();">Zásady ochrany soukromí</a>
+        <a href="#" class="footer-link" onclick="event.preventDefault(); openModal();">Kontakt</a>
+        <a href="#" class="footer-link" onclick="event.preventDefault(); openModal();">FAQ</a>
+      </div>
+      <div class="footer-copy">© 2026 Tvoje láska. Všechna práva vyhrazena.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Profiles data - 6 profiles, 1 with content locker
+    const profiles = [
+      { name: "Jana", age: 34, city: "Praha", blur: false, img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=500&fit=crop&auto=format&q=80" },
+      { name: "Alžběta", age: 53, city: "Brno", blur: false, img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=500&fit=crop&auto=format&q=80" },
+      { name: "Markéta", age: 38, city: "Ostrava", blur: true, img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&h=500&fit=crop&auto=format&q=80" },
+      { name: "Natálie", age: 41, city: "Plzeň", blur: false, img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=500&fit=crop&auto=format&q=80" },
+      { name: "Petra", age: 47, city: "Liberec", blur: false, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=500&fit=crop&auto=format&q=80" },
+      { name: "Veronika", age: 36, city: "Olomouc", blur: false, img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&h=500&fit=crop&auto=format&q=80" }
+    ];
+
+    // Modal
+    function openModal() { document.getElementById('modal').classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeModal() { document.getElementById('modal').classList.remove('active'); document.body.style.overflow = ''; }
+    document.getElementById('modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+    // Live online counter (249-271 women, 162-181 men)
+    function updateOnlineCounts() {
+      document.getElementById('women-count').textContent = Math.floor(249 + Math.random() * 22);
+      document.getElementById('men-count').textContent = Math.floor(162 + Math.random() * 19);
+    }
+    updateOnlineCounts();
+    setInterval(updateOnlineCounts, 3000);
+
+    // Generate carousel - 6 profiles x3 for smooth loop, 3 visible
+    const carousel = document.getElementById('carousel');
+    const allProfiles = [...profiles, ...profiles, ...profiles];
+    allProfiles.forEach(profile => {
+      const card = document.createElement('div');
+      card.className = 'profile-card' + (profile.blur ? ' blur' : '');
+      card.onclick = openModal;
+      card.innerHTML = `
+        <div class="profile-card-inner">
+          <img src="${profile.img}" alt="${profile.name}" loading="lazy">
+          <div class="profile-gradient"></div>
+          <span class="profile-badge"><span class="profile-badge-dot"></span>Online</span>
+          <div class="profile-info">
+            <p class="profile-name">${profile.name}, ${profile.age}</p>
+            <p class="profile-location">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              ${profile.city}
+            </p>
+          </div>
+          ${profile.blur ? `
+            <div class="content-locker">
+              <div class="locker-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <p class="locker-text">Obsah pouze<br>pro dospělé +18</p>
+              <span class="locker-link">Klikni pro zobrazení</span>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      carousel.appendChild(card);
+    });
+
+    // Smooth continuous carousel - slow scroll
+    let scrollPos = 0;
+    const cardWidth = 296; // card width + gap
+    const totalWidth = cardWidth * profiles.length;
+    
+    function animateCarousel() {
+      scrollPos += 0.4; // slow smooth scroll
+      if (scrollPos >= totalWidth) scrollPos = 0;
+      carousel.style.transform = `translateX(-${scrollPos}px)`;
+      requestAnimationFrame(animateCarousel);
+    }
+    requestAnimationFrame(animateCarousel);
+
+    // Animated stats on scroll
+    const stat1El = document.getElementById('stat1');
+    const stat2El = document.getElementById('stat2');
+    const stat3El = document.getElementById('stat3');
+    let statsAnimated = false;
+
+    function formatNumber(num) {
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K+';
+      return num + '+';
+    }
+
+    function animateValue(el, end, duration) {
+      const startTime = performance.now();
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        el.textContent = formatNumber(Math.floor(easeOut * end));
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !statsAnimated) {
+          statsAnimated = true;
+          animateValue(stat1El, 12500, 2000);
+          animateValue(stat2El, 89000, 2500);
+          animateValue(stat3El, 3200, 2000);
+        }
+      });
+    }, { threshold: 0.3 });
+    
+    observer.observe(document.getElementById('stats-section'));
+  </script>
+</body>
+</html>
